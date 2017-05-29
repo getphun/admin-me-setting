@@ -1,0 +1,103 @@
+<?php $this->partial('shared/header'); ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?php $this->partial('me/setting/sidebar'); ?>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header">
+                <h3><?= $title ?></h3>
+            </div>
+            
+            <?php
+                $reff = $this->req->url;
+                $mailer_exists = module_exists('mailer');
+            ?>
+            
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <?php
+                        $error = $this->form->getError('email');
+                    ?>
+                    <div class="form-group<?= $error ? ' has-error' : '' ?>">
+                        <form class="input-group" method="post">
+                            <input type="email" required="required" id="field-email" name="email" placeholder="Add new email" class="form-control" value="<?= !$success ? $this->req->getPost('email') : ''; ?>">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default">Add</button>
+                            </span>
+                        </form>
+                        <?php if($error): ?>
+                        <span id="field-email-help-block" class="help-block"><?= $error ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            
+            <?php if($success): ?>
+            <div class="alert alert-success"><strong>Success!</strong> The email already created</div>
+            <?php endif; ?>
+            
+            <?php if($emails): ?>
+            <div class="list-group">
+                <?php foreach($emails as $email): ?>
+                <div class="list-group-item">
+                    <?php
+                        // menu exists if
+                        // - it's not default
+                        // - it's not verified
+                        // user can't remove default email
+                    ?>
+                    <?php if($email->status != 3): ?>
+                    <div class="btn-group btn-group-xs pull-right" role="group">
+                        
+                        <?php if($email->status == 1 && $mailer_exists): ?>
+                        <a href="<?= $this->router->to('adminMeEmailVerify', ['id'=>$email->id], ['ref'=>$reff]) ?>" class="btn btn-default" title="Verify">
+                            <i class="fa fa-check-circle-o" aria-hidden="true"></i>
+                        </a>
+                        <?php endif; ?>
+                        
+                        <button id="email-<?= $email->id ?>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="email-<?= $email->id ?>">
+                            <?php if($email->status == 2): ?>
+                                <li>
+                                    <a href="<?= $this->router->to('adminMeEmailPrimary', ['id'=>$email->id], ['ref'=>$reff]) ?>" title="Set as default" aria-label="Set as default">
+                                        <i class="fa fa-check-circle-o" aria-hidden="true"></i> Set as default
+                                    </a>
+                                </li>
+                                <li role="separator" class="divider"></li>
+                            <?php endif; ?>
+                            <li>
+                                <a href="<?= $this->router->to('adminMeEmailRemove', ['id'=>$email->id], ['ref'=>$reff]) ?>" data-confirm="Delete Confirmation" data-confirm-message="Are you sure want to delete this email? This action can't be undone." title="Delete" aria-label="Delete">
+                                    <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </diV>
+                    <?php endif; ?>
+                    
+                    <h4 class="list-group-item-heading">
+                        <?= $email->address ?>
+                        <?php if($email->status == 2): ?>
+                            <sup title="Verified"><i class="fa fa-check-circle-o" aria-hidden="true"></i></sup>
+                        <?php elseif($email->status == 3): ?>
+                            <sup title="Default" class="text-success"><i class="fa fa-check-circle-o" aria-hidden="true"></i></sup>
+                        <?php endif; ?>
+                    </h4>
+                    <p class="list-group-item-text small">
+                        <span title="Created">
+                            <i class="fa fa-calendar-plus-o"></i> <?= date('M d, Y H:i', strtotime($email->created)); ?>
+                        </span>
+                    </p>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+            
+        </div>
+    </div>
+</div>
+
+<?php $this->partial('shared/footer'); ?>

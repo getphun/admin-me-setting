@@ -1,0 +1,53 @@
+<?php $this->partial('shared/header'); ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?php $this->partial('me/setting/sidebar'); ?>
+        </div>
+        <?php $reff = $this->req->url; ?>
+        <div class="col-md-9">
+            <div class="page-header">
+                <a href="<?= $this->router->to('adminMeSocialEdit', ['id'=>0], ['ref'=>$reff]) ?>" class="btn btn-default pull-right">Create</a>
+                <h3><?= $title ?></h3>
+            </div>
+            
+            
+            <?php if($socials): ?>
+            <div class="list-group">
+                <?php foreach($socials as $social): ?>
+                <div class="list-group-item">
+                    <div class="btn-group btn-group-xs pull-right" role="group">
+                        <a href="<?= $this->router->to('adminMeSocialEdit', ['id'=>$social->id], ['ref'=>$reff]); ?>" class="btn btn-default" title="Edit">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        </a>
+                        <button id="social-<?= $social->id ?>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="social-<?= $social->id ?>">
+                            <li>
+                                <a href="<?= $this->router->to('adminMeSocialRemove', ['id'=>$social->id], ['ref'=>$reff]) ?>" data-confirm="Delete Confirmation" data-confirm-message="Are you sure want to delete this social account? This action can't be undone." title="Delete" aria-label="Delete">
+                                    <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    
+                    <h4 class="list-group-item-heading">
+                        <?= $social->page ?>
+                    </h4>
+                    <p class="list-group-item-text small">
+                        <span title="Created">
+                            <i class="fa fa-calendar-plus-o"></i> <?= date('M d, Y H:i', strtotime($social->created)); ?>
+                        </span>
+                    </p>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+            
+        </div>
+    </div>
+</div>
+
+<?php $this->partial('shared/footer'); ?>

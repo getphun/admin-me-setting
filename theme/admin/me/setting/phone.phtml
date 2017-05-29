@@ -1,0 +1,93 @@
+<?php $this->partial('shared/header'); ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?php $this->partial('me/setting/sidebar'); ?>
+        </div>
+        <div class="col-md-9">
+            <div class="page-header">
+                <h3><?= $title ?></h3>
+            </div>
+            
+            <?php
+                $reff = $this->req->url;
+            ?>
+            
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <?php
+                        $error = $this->form->getError('phone');
+                    ?>
+                    <div class="form-group<?= $error ? ' has-error' : '' ?>">
+                        <form class="input-group" method="post">
+                            <!-- pattern="^\+([0-9- ]+)[0-9]$" -->
+                            <input type="tel" required="required" id="field-phone" name="phone" placeholder="Add new phone" class="form-control" value="<?= !$success ? $this->req->getPost('phone') : ''; ?>">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default">Add</button>
+                            </span>
+                        </form>
+                        <?php if($error): ?>
+                        <span id="field-phone-help-block" class="help-block"><?= $error ?></span>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            
+            <?php if($success): ?>
+            <div class="alert alert-success"><strong>Success!</strong> The phone already created</div>
+            <?php endif; ?>
+            
+            <?php if($phones): ?>
+            <div class="list-group">
+                <?php foreach($phones as $phone): ?>
+                <div class="list-group-item">
+                    <?php
+                        // menu exists if
+                        // - it's not default
+                        // user can't remove default phone
+                    ?>
+                    <?php if($phone->status != 3): ?>
+                    <div class="btn-group btn-group-xs pull-right" role="group">
+                        <button id="phone-<?= $phone->id ?>" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="btn btn-default btn-xs">
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="phone-<?= $phone->id ?>">
+                            <li>
+                                <a href="<?= $this->router->to('adminMePhonePrimary', ['id'=>$phone->id], ['ref'=>$reff]) ?>" title="Set as default" aria-label="Set as default">
+                                    <i class="fa fa-check-circle-o" aria-hidden="true"></i> Set as default
+                                </a>
+                            </li>
+                            <li role="separator" class="divider"></li>
+                            <li>
+                                <a href="<?= $this->router->to('adminMePhoneRemove', ['id'=>$phone->id], ['ref'=>$reff]) ?>" data-confirm="Delete Confirmation" data-confirm-message="Are you sure want to delete this phone? This action can't be undone." title="Delete" aria-label="Delete">
+                                    <i class="fa fa-trash" aria-hidden="true"></i> Delete
+                                </a>
+                            </li>
+                        </ul>
+                    </diV>
+                    <?php endif; ?>
+                    
+                    <h4 class="list-group-item-heading">
+                        <?= $phone->number ?>
+                        <?php if($phone->status == 2): ?>
+                            <sup title="Verified"><i class="fa fa-check-circle-o" aria-hidden="true"></i></sup>
+                        <?php elseif($phone->status == 3): ?>
+                            <sup title="Default" class="text-success"><i class="fa fa-check-circle-o" aria-hidden="true"></i></sup>
+                        <?php endif; ?>
+                    </h4>
+                    <p class="list-group-item-text small">
+                        <span title="Created">
+                            <i class="fa fa-calendar-plus-o"></i> <?= date('M d, Y H:i', strtotime($phone->created)); ?>
+                        </span>
+                    </p>
+                </div>
+                <?php endforeach; ?>
+            </div>
+            <?php endif; ?>
+            
+        </div>
+    </div>
+</div>
+
+<?php $this->partial('shared/footer'); ?>

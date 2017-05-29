@@ -1,0 +1,25 @@
+<?php $this->partial('shared/header'); ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?php $this->partial('me/setting/sidebar'); ?>
+        </div>
+        <?php
+            $next = $this->req->getQuery('ref') ?? $this->router->to('adminMeEmail');
+        ?>
+        <div class="col-md-9">
+            <div class="page-header">
+                <h3><?= $title ?></h3>
+            </div>
+            
+            <?php if($error): ?>
+            <div class="alert alert-danger"><strong>Error!</strong> The link is invalid or it's already expired.</div>
+            <?php else: ?>
+            <div class="alert alert-success"><strong>Success!</strong> Some link already sent to the related email address, please click the link to verify you email.</div>
+            <?php endif; ?>
+        </div>
+    </div>
+</div>
+
+<?php $this->partial('shared/footer'); ?>

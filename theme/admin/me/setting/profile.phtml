@@ -1,0 +1,91 @@
+<?php $this->partial('shared/header'); ?>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <?php $this->partial('me/setting/sidebar'); ?>
+        </div>
+        <form method="post" class="col-md-9">
+            <div class="page-header">
+                <button class="btn btn-primary pull-right">Save</button>
+                <h3>Profile</h3>
+            </div>
+            
+            <?php if($saved): ?>
+            <div class="alert alert-success">
+                <strong>Success!</strong> Your profile is updated.
+            </div>
+            <?php endif; ?>
+            
+            <?php
+                $fields = [];
+                
+                foreach($form as $field => $args){
+                    if(!isset($fields[$args['form-position']]))
+                        $fields[$args['form-position']] = [];
+                    $fields[$args['form-position']][] = $field;
+                }
+            ?>
+            <div class="row">
+                <!-- left -->
+                <div class="col-md-4">
+                    <?php if(isset($fields['left'])): ?>
+                        <?php foreach($fields['left'] as $field): ?>
+                            <?= $this->form->field($field); ?>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+                <div class="col-md-8">
+                    <div class="row">
+                        <!-- top-left -->
+                        <div class="col-md-6">
+                            <?php if(isset($fields['top-left'])): ?>
+                                <?php foreach($fields['top-left'] as $field): ?>
+                                    <?= $this->form->field($field); ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                        <!-- top-right -->
+                        <div class="col-md-6">
+                            <?php if(isset($fields['top-right'])): ?>
+                                <?php foreach($fields['top-right'] as $field): ?>
+                                    <?= $this->form->field($field); ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <!-- center -->
+                        <div class="col-md-12">
+                        <?php if(isset($fields['center'])): ?>
+                            <?php foreach($fields['center'] as $field): ?>
+                                <?= $this->form->field($field); ?>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
+                        </diV>
+                    </div>
+                    <div class="row">
+                        <!-- bottom-left -->
+                        <div class="col-md-6">
+                            <?php if(isset($fields['bottom-left'])): ?>
+                                <?php foreach($fields['bottom-left'] as $field): ?>
+                                    <?= $this->form->field($field); ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                        <!-- bottom-right -->
+                        <div class="col-md-6">
+                            <?php if(isset($fields['bottom-right'])): ?>
+                                <?php foreach($fields['bottom-right'] as $field): ?>
+                                    <?= $this->form->field($field); ?>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<?php $this->partial('shared/footer'); ?>

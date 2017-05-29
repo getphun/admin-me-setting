@@ -1,0 +1,29 @@
+#password-meter{
+    height: 2px;
+    width: 0;
+    transition: width .3s ease;
+}
+#password-meter[data-level="very-weak"]{
+    background-color: #F41600;
+    width: 5%;
+}
+#password-meter[data-level="weak"]{
+    background-color: #D65000;
+    width: 20%;
+}
+#password-meter[data-level="better"]{
+    background-color: #C07B00;
+    width: 40%;
+}
+#password-meter[data-level="medium"]{
+    background-color: #A9A700;
+    width: 60%;
+}
+#password-meter[data-level="strong"]{
+    background-color: #A0B700;
+    width: 80%;
+}
+#password-meter[data-level="strongest"]{
+    background-color: #00FF00;
+    width: 100%;
+}

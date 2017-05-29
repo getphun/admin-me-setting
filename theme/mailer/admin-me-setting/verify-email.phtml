@@ -1,0 +1,29 @@
+<html>
+<body>
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "EmailMessage",
+            "potentialAction": {
+                "@type": "ViewAction",
+                "target": "<?= $link ?>",
+                "url": "<?= $link ?>",
+                "name": "Verify Email"
+            },
+            "description": "Email address verification"
+        }
+
+    </script>
+    <p>Hi <?= $user->fullname ?>,</p>
+
+    <p>As of your request to verify your email address that you add to our system at <?= $this->setting->site_name ?>, please click link below to verify it.</p>
+
+    <p><a href="<?= $link ?>" style="display:inline-block;padding:10px 20px;color:white;background-color:#3498db;border-radius:5px;text-decoration:none;font-weight:700;">Verify now</a></p>
+
+    <p>If the link not work, please copy and paste below link to your browser's address-bar.</p>
+
+    <pre style="background-color:#eee;padding:10px;border-radius:5px;"><?= $link ?></pre>
+
+    <p>Regards, <br> <?= $this->setting->site_name ?></p>
+</body>
+</html>
