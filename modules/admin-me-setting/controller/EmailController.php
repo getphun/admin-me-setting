@@ -179,8 +179,11 @@ class EmailController extends AdminMeController
         $code = $this->param->code;
         if($code != $email->code)
             $params['error'] = true;
-        else
+        else{
             UEmail::set(['code' => '', 'status' => 2], $id);
+            if($this->user->status == 1)
+                User::set(['status'=>2], $this->user->id);
+        }
         
         $this->respond('me/setting/email-verify-confirm', $params);
     }
